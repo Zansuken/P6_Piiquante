@@ -3,12 +3,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 
-const URI = process.env.MONGO_URI;
+const userRoutes = require("./routes/user");
+const sauceRoutes = require("./routes/sauce");
+
+const { MONGO_URI } = process.env;
 
 const app = express();
 
 try {
-  mongoose.connect(URI, {
+  mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -31,5 +34,9 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use("/api/sauces", sauceRoutes);
+app.use("/api/auth", userRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;
