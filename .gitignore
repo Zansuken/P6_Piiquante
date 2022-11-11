@@ -3,3 +3,6 @@ node_modules
 
 # MongoDB creds
 .env
+
+# Server images
+server/images/*
