@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const helmet = require("helmet");
 
 const userRoutes = require("./routes/user");
 const sauceRoutes = require("./routes/sauce");
@@ -21,6 +22,12 @@ try {
 }
 
 app.use(express.json());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
+app.use(helmet.frameguard({ action: "deny" }));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
