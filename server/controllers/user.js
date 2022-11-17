@@ -2,8 +2,17 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { JWT_KEY } = process.env;
+const validator = require("validator");
+
+const { isEmail, isStrongPassword } = validator;
 
 exports.signup = (req, res) => {
+  if (!isEmail(req.body.email)) {
+    return res.status(400).json({ message: "Not a valid email address." });
+  }
+  if (!isStrongPassword(req.body.password)) {
+    return res.status(400).json({ message: "Not a strong password." });
+  }
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
